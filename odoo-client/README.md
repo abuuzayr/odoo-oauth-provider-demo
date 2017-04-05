@@ -1,4 +1,4 @@
-# docker-odoo-oauth-provider-demo/odoo-client
+# odoo-oauth-provider-demo/odoo-client
 
 This set up the odoo instance under docker: `odoo-client`.
 
@@ -9,7 +9,7 @@ This set up the odoo instance under docker: `odoo-client`.
 3. [smecen/nginx](https://git.groventure.com/smecen/nginx) is running.
 4. [smecen/test-certs](https://git.groventure.com/smecen/test-certs)
    cloned in the same parent directory as this project.
-4. An entry in your `hosts` file with the mapping: `127.0.0.1
+5. An entry in your `hosts` file with the mapping: `127.0.0.1
    odoo.oauth-client`.
 
 # Instructions

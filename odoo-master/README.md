@@ -1,4 +1,4 @@
-# docker-odoo-oauth-provider-demo/odoo-master
+# odoo-oauth-provider-demo/odoo-master
 
 This set up the odoo instance under docker: `odoo-master`.
 
