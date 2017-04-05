@@ -1,0 +1,60 @@
+---
+version: '3'
+
+services:
+  odoo-postgresql.oauth-client:
+    image: 'postgres:9.5'
+    networks:
+      - odoo.oauth-client
+    environment:
+      POSTGRES_USER: 'odoo'
+      POSTGRES_PASSWORD: 'odoo'
+    volumes:
+      - 'odoo-postgresql-data.oauth-client:/var/lib/postgresql/data:rw,Z'
+    restart: always
+
+  odoo.oauth-client:
+    image: 'docker.groventure.com/gronex/odoo:upstream-10.0'
+    expose:
+      - '8069'
+    networks:
+      - nginx
+      - odoo.oauth-client
+    extra_hosts:
+      odoo.oauth-master: '172.17.0.1'
+    links:
+      - 'odoo-postgresql.oauth-client:postgres'
+    environment:
+      VIRTUAL_HOST: 'odoo.oauth-client'
+      VIRTUAL_PORT: '8069'
+      PGUSER: 'odoo'
+      PGPASSWORD: 'odoo'
+    volumes:
+      - 'odoo-data.oauth-client:/var/lib/odoo:rw,Z'
+      - '../../test-certs/root.pem:/etc/ssl/certs/97ef0669.0:ro,Z'
+    user: root
+    command:
+      - 'bash'
+      - '-c'
+      - >
+        echo $PGUSER &&
+        update-ca-certificates &&
+        exec su - odoo
+        --preserve-environment
+        --shell /bin/bash
+        -c 'exec /odoo serve --single'
+    depends_on:
+      - odoo-postgresql.oauth-client
+    restart: always
+
+volumes:
+  nginx-conf:
+  nginx-gen-templates:
+  odoo-postgresql-data.oauth-client:
+  odoo-data.oauth-client:
+
+networks:
+  nginx:
+    external:
+      name: nginx_nginx
+  odoo.oauth-client:
